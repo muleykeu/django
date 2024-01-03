@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <title>Photogram</title>
+</head>
+<body>
+    <div class="page-header">
+        <h1><a>Photogram</a>&emsp;
+            <a href="{% url 'anasayfa' %}">Anasayfa</a>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <form class="d-sm-inline-flex" method="POST" action="{% url 'arama_sonuclari' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Arama" aria-label="Arama" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Ara</button>
+            </form>
+
+            &emsp;&emsp;
+        <a href="{% url 'profil' %}">Profil</a>&emsp;
+        <a href="{% url 'cikis' %}">Çıkış</a></h1>
+    </div>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <div class="content container">
+        <div class="row">
+        <div class="col-md-8">
+            {% if searched %}
+                <h2>Arama sonuçları: {{ search_query }}</h2>
+                <br/>
+                {% for sonuc in sonuclar %}
+                    <a href="">{{ sonuc }}</a><br/>
+                {% endfor%}
+            {% else %}
+                <h2>Lütfen aramak için bir kelime giriniz.</h2>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

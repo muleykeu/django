@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <title>Photogram</title>
+</head>
+<body>
+
+    <div class="page-header">
+        <h1><a>Photogram</a>&emsp;
+           <a href="{% url 'anasayfa' %}">Anasayfa</a>&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+            <form class="d-sm-inline-flex" method="POST" action="{% url 'arama_sonuclari' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Arama" aria-label="Arama" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Ara</button>
+            </form>
+
+            &emsp;&emsp;
+            <a href="{% url 'gelen_kutusu' %}">Mesajlar</a>&emsp;
+            <a href="{% url 'post_olustur' %}">Yeni Gönderi</a>&emsp;
+            <a href="{% url 'profduzenle' %}">Profil Düzenle</a>&emsp;
+        <a href="{% url 'cikis' %}">Çıkış</a></h1>
+    </div>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="media">
+              <img class="rounded-circle account-img" src="{{ user.profil.image.url }}">
+                &emsp;<div class="media-body">
+                    <h2 class="account-heading">{{ user.username }}</h2>
+                    <h6 class="text-secondary">{{ user.email }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+            {% for post in userpost %}
+                <div class="post">
+                    <h2> <img class="rounded-circle account-img" src="{{ post.author.profil.image.url }}">
+                    <a href="{% url 'post_ayrinti' post.id %}">{{ post.author }}</a></h2>
+                    <div class="post_image">
+                        {% if post.image %}
+                        <img src="{{ post.image.url }}">
+                        {% endif %}
+                    </div>
+                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <p>{{ post.text|linebreaksbr }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>

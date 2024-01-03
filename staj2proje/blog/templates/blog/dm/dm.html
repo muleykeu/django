@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <title>Photogram</title>
+</head>
+<body>
+
+    <div class="page-header">
+        <h1><a>Photogram</a>&emsp;
+           <a href="{% url 'anasayfa' %}">Anasayfa</a>&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+            <form class="d-sm-inline-flex" method="POST" action="{% url 'arama_sonuclari' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Arama" aria-label="Arama" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Ara</button>
+            </form>
+
+            &emsp;&emsp;
+            <a href="{% url 'profil' %}">Profil</a>&emsp;
+        <a href="{% url 'cikis' %}">Çıkış</a></h1>
+    </div>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <div class="content container">
+
+            <div class="columns is-mobile">
+                <div class="column is-one-quarter">
+                    <br class="menu">
+                        <h1 class="title is-2">Mesajlar <a href="{% url 'kullanici_ara' %}" class="btn btn-outline-secondary">Yeni Mesaj</a></h1> <br>
+                        <ul style="overflow-y: scroll; height: 500px" class="menu-list">
+                            {% for mesaj in mesajlar %}
+                                <a class="{% if aktif_dm == mesaj.user.username %}is-active{% endif %}" href="{% url 'direkt' mesaj.user.username %}">
+                                    <div class="box">
+                                        <article class="media">
+                                            <div class="media-left">
+                                                <figure class="image is-64x64">
+                                                    {% if mesaj.user.profil.image %}
+                                                        <img class="rounded-circle account-img" src="{{ mesaj.user.profil.image.url }}" alt="Placeholder image">
+                                                    {% endif %}
+                                                </figure>
+                                            </div>
+                                            <div class="media-content">
+                                                <div class="content">
+                                                    <p><strong>{{ mesaj.user.username }}</strong></p>
+                                                </div>
+                                                <div class="content">
+                                                    {% if mesaj.okunmadi %}
+                                                        <p style="font-weight: bold; color: firebrick;">
+                                                            <i class="material-icons">mark_chat_unread</i> {{ mesaj.okunmadi }}
+                                                        </p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                </div>
+
+                <div class="column">
+                    <div style="overflow-y: scroll; height: 500px">
+
+                        {% for dm in dmler %}
+                            <div class="box">
+                                <article class="media">
+                                    <div class="media-left">
+                                    </div>
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p>
+                                                <strong>{{ dm.gonderen.username }}</strong><strong> <small>{{ dm.tarih|date:'N d G:i'}} tarihinde</small></strong>
+                                            </p>
+                                            {{ dm.mesaj }}
+                                        </div>
+                                    </div>
+                                </article>
+                            </div><br>
+                        {% endfor %}
+                    </div>
+
+                    <form role="form" method="POST" action="{% url 'gonder' %}">
+                        {% csrf_token %}
+                        <article class="media">
+                            <div class="media-content">
+                                <input type="hidden" name="to_user" value="{{ aktif_dm }}">
+                                <div class="field">
+                                    <p class="control">
+                                        <textarea class="textarea" name="mesaj" placeholder="Mesaj yazın..."></textarea>
+                                    </p>
+                                </div>
+                                <nav class="level">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <button type="submit" name="action" class="btn btn-outline-secondary">Gönder</button>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </article>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+</body>
+</html>

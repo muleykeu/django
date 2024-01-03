@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <title>Photogram</title>
+</head>
+<body>
+
+    <div class="page-header">
+        <h1><a>Photogram</a>&emsp;
+           <a href="{% url 'anasayfa' %}">Anasayfa</a>&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+            <form class="d-sm-inline-flex" method="POST" action="{% url 'arama_sonuclari' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Arama" aria-label="Arama" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Ara</button>
+            </form>
+
+            &emsp;&emsp;
+            <a href="{% url 'profil' %}">Profil</a>&emsp;
+        <a href="{% url 'cikis' %}">Çıkış</a></h1>
+    </div>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <div class="content container">
+
+
+            <div class="columns is-mobile">
+                <div class="column is-offset-one-fifth">
+                    <div class="field has-addons">
+                        <form>
+                            <div class="control">
+                                <input class="input is-large" name="q" type="text" placeholder="Kullanıcı ara" value="{{ request.GET.q }}">
+                            </div>
+                            <div class="control">
+                                <br><button type="submit" class="btn btn-outline-secondary">Ara</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        <div class="column is-one-quarter">
+            {% for user in users %}
+                <div class="box">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64">
+                                {% if user.profil.image %}
+                                    <br><img class="rounded-circle account-img" src="{{ user.profil.image.url }}" alt="Placeholder image">
+                                {% endif %}
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                   <br> <strong>{{ user.username }}</strong>
+                                </p>
+                                <a href="{% url 'yeni_konusma' user.username %}" class="btn btn-outline-secondary">Mesaj Gönder</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</body>

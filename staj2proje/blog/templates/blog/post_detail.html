@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <title>Photogram</title>
+</head>
+<body>
+    <div class="page-header">
+        <h1><a>Photogram</a>&emsp;
+            <a href="{% url 'anasayfa' %}">Anasayfa</a>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <a href="{% url 'profil' %}">Profil</a>&emsp;
+        <a href="{% url 'cikis' %}">Çıkış</a></h1>
+    </div>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+                <div class="post">
+                    <h2> <img class="rounded-circle account-img" src="{{ object.author.profil.image.url }}">
+                    <a>{{ object.author }}</a></h2>
+                    <div class="post_image">
+                        {% if object.image %}
+                        <img src="{{ object.image.url }}">
+                        {% endif %}
+                    </div>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <p>{{ object.text|linebreaksbr }}</p>
+                    <div class="date">
+                        <p>Yayın tarihi: {{ object.published_date }}</p>
+                    </div>
+                    <div class="media-right">
+                        <form action="{% url 'post_begen' post.pk%}" method="POST">
+                            {% csrf_token %}
+                            <p style="font-weight: bold; color: firebrick;">
+                            <i class="material-icons">favorite</i>
+                            {% if begenildi %}
+                                <button type="submit", name="post_id", value="{{ post.id }}">Vazgeç</button>
+                            {% else %}
+                                 <button type="submit", name="post_id", value="{{ post.id }}">Beğen</button>
+                            {% endif %}
+                            {% if begenildi %}
+                            {{ total_likes }} Beğeni</p>
+                            {% endif %}
+                        </form>
+
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+                        <h5>Yorumlar:</h5>
+                        {% if not post.yorumlar.all %}
+                                Henüz yorum yapılmamış. <a href="{% url 'yorum_yap' post.pk %}">Yorum Yap</a>
+                        {% else %}
+                                {% for yorum in post.yorumlar.all %}
+                                    <br><strong>
+                                    {{ yorum.isim }}
+                                </strong>
+                                    {{ yorum.yorum }}<br>
+                                    {{ yorum.yorum_tarihi }}<br>
+                                {% endfor %}
+                            <br><a href="{% url 'yorum_yap' post.pk %}">Yorum Yap</a>
+                        {% endif %}
+                    </div>
+                </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+

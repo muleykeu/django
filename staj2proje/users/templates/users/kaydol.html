@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <title>Photogram</title>
+</head>
+<body>
+    <div class="page-header">
+        <h1><a href="{% url 'post_list' %}">Photogram</a>
+    </div>
+    {% load crispy_forms_tags %}
+        <div class="content container">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Kaydol</legend>
+                    {{ form | crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Kaydol</button>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <small class="text-muted">Zaten bir hesabınız var mı?&emsp;<a class="ml-2" href="{% url 'giris' %}">Giriş Yap</a> </small>
+            </div>
+        </div>
+</body>
+</html>
